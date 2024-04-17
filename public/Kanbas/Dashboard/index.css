@@ -1,0 +1,7 @@
+.card-container {
+    width: 300px;
+}
+.card-body > a, .card-body > p > a {
+    text-decoration: none;
+    color: black;
+}

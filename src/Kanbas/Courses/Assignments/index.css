@@ -1,0 +1,21 @@
+.head, .single-as {
+    justify-content: space-between;
+    align-items: center;
+}
+.head > * {
+    height: 40px;
+    margin: 10px 1px;
+}
+.head > div > button {
+    margin: 0px 1px;
+}
+a {
+    color: #555555;
+}
+.single-as {
+    display: flex;
+}
+.single-as > div {
+    display: flex;
+    align-items: center;
+}
