@@ -64,7 +64,7 @@ function Dashboard() {
           {courses.map((course) => (
             <div key={course.id} className="col" style={{ width: 300 }}>
               <div className="card">
-                <img src={`/images/bake.jpg`} className="card-img-top"
+                <img src={`images/environment.jpg`} className="card-img-top"
                      style={{ height: 150 }}/>
                 <div className="card-body">
                   <Link className="card-title" to={`/Kanbas/Courses/${course.id}`}
