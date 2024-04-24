@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import Assignments from "./Assignments";
 import * as client from "./client";
 import { Course } from "./client";
+import Quizzes from "./Quizzes";
 
 function Courses() {
   const { courseId } = useParams();
@@ -43,7 +44,7 @@ function Courses() {
                     <Route path="Piazza" element={<h1>Piazza</h1>} />
                     <Route path="Assignments" element={<Assignments/>} />
                     <Route path="Assignments/:assignmentId" element={<h1>Assignment Editor</h1>} />
-                    <Route path="Quizzes" element={<h1>Quizzes</h1>} />
+                    <Route path="Quizzes" element={<Quizzes/>} />
                     <Route path="Grades" element={<h1>Grades</h1>} />
                     <Route path="People" element={<h1>People</h1>} />
                     <Route path="Panopto Video" element={<h1>Panopto Video</h1>} />
