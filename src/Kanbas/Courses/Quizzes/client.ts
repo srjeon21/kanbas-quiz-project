@@ -6,18 +6,28 @@ const COURSES_API = `${API_BASE}api/courses`;
 const QUIZZES_API = `${API_BASE}api/quizzes`;
 
 export interface Quiz {
-    _id: string, title: string; availableDate: Date; untilDate: Date; dueDate: Date; points: number, course: string
+    id: string, title: string, availableDate: Date, untilDate: Date, dueDate: Date,
+    points: number, course: string, published: boolean, type: string,
+    assignmentGroup: string, shuffleAnswers: boolean, timeLimit: number,
+    multipleAttempts: boolean, showCorrectAnswers: string, accessCode: string,
+    oneQAtTime: boolean, webcam: boolean, lockQAfterAnswering: boolean
 };
-
+// Quiz List
 export const createQuiz = async (courseId:any, quiz:any) => {
-    const response = await axios.post(`${COURSES_API}/${courseId}/quizzes`,quiz);
+    const response = await axios.post(`${COURSES_API}/${courseId}/quizzes`, quiz);
     return response.data;
 };
+// Quiz List
 export const findAllQuizzes = async (courseId:any) => {
   const response = await axios
     .get(`${COURSES_API}/${courseId}/quizzes`);
   return response.data;
 };
+// Quiz Details
+export const findQuizById = async (qid: string) => {
+  const response = await axios.get(`${QUIZZES_API}/${qid}`);
+  return response.data;
+}
 /*
 export const updateQuiz = async (module:any) => {
     const response = await axios.put(`${QUIZZES_API}/${module._id}`, module);

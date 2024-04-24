@@ -1,0 +1,7 @@
+#main td:nth-child(1) {
+    text-align: end;
+    font-weight: bold;
+}
+th {
+    border-bottom: 1pt solid grey;
+}

@@ -2,7 +2,7 @@ import { useParams, Navigate, Route, Routes, useLocation } from "react-router";
 import { HiMiniBars3, HiChevronRight } from "react-icons/hi2";
 import CourseNavigation from "./Navigation";
 import Modules from "./Modules";
-import "./index.css"
+import "./index.css";
 import Home from "./Home";
 import { useState, useEffect } from "react";
 import Assignments from "./Assignments";
@@ -44,7 +44,7 @@ function Courses() {
                     <Route path="Piazza" element={<h1>Piazza</h1>} />
                     <Route path="Assignments" element={<Assignments/>} />
                     <Route path="Assignments/:assignmentId" element={<h1>Assignment Editor</h1>} />
-                    <Route path="Quizzes" element={<Quizzes/>} />
+                    <Route path="Quizzes/*" element={<Quizzes/>} />
                     <Route path="Grades" element={<h1>Grades</h1>} />
                     <Route path="People" element={<h1>People</h1>} />
                     <Route path="Panopto Video" element={<h1>Panopto Video</h1>} />
