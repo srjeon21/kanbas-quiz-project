@@ -21,6 +21,7 @@ function QuizDetails() {
         try {
             const quizDetail = await client.findQuizById(qid as string);
             setQuiz(quizDetail);
+            setPublished(quiz.published);
         } catch (error: any) {
             console.log(error);
             navigate(`/Kanbas/Courses/${courseId}/Quizzes`);
@@ -29,22 +30,22 @@ function QuizDetails() {
     useEffect(() => {
         fetchQuizDetails();
     }, []);
-    const togglePublished = () => {
-        quiz.published = (!quiz.published);
-        console.log(quiz.published);
-        setQuiz(quiz);
-    };
     const dateToString = (d:Date) => {
         const date = new Date(d);
         return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} at ${date.getHours()}:${date.getMinutes()}`;
     }
+    const [published, setPublished] = useState(quiz.published);
+    const handleClick = async () => {
+        setPublished(!published);
+        quiz.published = published;
+        await client.updateQuiz(quiz);
+      };
     return (
         <div>
             {quiz && (
             <div>
                 <div className="buttons">
-                    {(quiz.published) && <button className="btn btn-success" onClick={togglePublished}><FaCheckCircle/> Published</button>}
-                    {!(quiz.published) && <button className="btn btn-danger" onClick={togglePublished}> <FaBan/> Unpublished</button>}
+                    <button onClick={handleClick} className={!published ? "btn btn-success" : "btn btn-danger"}>{!published ? <FaCheckCircle/>: <FaBan/>}{!published ? " Published" : " Unpublished"}</button>
                     <button className="btn btn-secondary">Preview</button>
                     <button className="btn btn-secondary"><FaPencilAlt/> Edit</button>
                     <button className="btn btn-secondary"><FaEllipsisV/></button>

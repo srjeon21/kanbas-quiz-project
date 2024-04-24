@@ -28,11 +28,12 @@ export const findQuizById = async (qid: string) => {
   const response = await axios.get(`${QUIZZES_API}/${qid}`);
   return response.data;
 }
-/*
-export const updateQuiz = async (module:any) => {
-    const response = await axios.put(`${QUIZZES_API}/${module._id}`, module);
+// Quiz Details
+export const updateQuiz = async (quiz:any) => {
+    const response = await axios.put(`${QUIZZES_API}/${quiz.id}`, quiz);
     return response.data;
   };
+  /*
 export const deleteQuiz = async (mid:any) => {
   const response = await axios.delete(`${QUIZZES_API}/${mid}`);
   return response.data;
