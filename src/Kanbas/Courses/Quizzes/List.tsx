@@ -74,7 +74,7 @@ function QuizList() {
                 <button className="btn btn-danger" onClick={createQuiz}>+ Quiz</button>
                 <button className="btn btn-secondary"><FaEllipsisV/></button>
             </div><hr/>
-            {quizzes.length == 0 && <div>Click '+ Quiz' button to create a new quiz.</div>}
+            {quizzes.length === 0 && <div>Click '+ Quiz' button to create a new quiz.</div>}
             <ul className="list-group quizzes">
                 <li className="list-group-item">
                 &nbsp; <FaAngleDown/> Quizzes

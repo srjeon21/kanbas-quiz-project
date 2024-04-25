@@ -14,12 +14,9 @@ th {
 .nav-link, .nav-link:hover {
     color: red;
 }
-.form-check.d-flex {
+.d-inline-flex, .questions .buttons {
     gap:10px;
-}
-.questions .buttons {
-    justify-content: center;
-    gap: 10px;
+    align-items: center;
 }
 
 /* Quiz List */
