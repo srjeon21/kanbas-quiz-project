@@ -21,3 +21,30 @@ th {
     justify-content: center;
     gap: 10px;
 }
+
+/* Quiz List */
+.quizzes > li {
+  background-color: lightgray;
+  border: 1px solid gray !important;
+}
+.quizzes > li > ul {
+  padding-top: 20px;
+}
+.quizzes > li > ul > li {
+  padding: 15px;
+  border-top: 1px solid gray !important;
+}
+.quizzes > .list-group-item {
+    padding-top: 20px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+}
+.dates > * {
+    font-size: 0.9em;;
+    padding-right: 20px;
+}
+#quiz-list {
+    justify-content: space-between;
+    align-items: center;
+}

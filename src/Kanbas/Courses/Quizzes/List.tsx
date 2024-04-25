@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { FaEllipsisV, FaCheckCircle, FaPlusCircle } from "react-icons/fa";
+import { FaEllipsisV, FaAngleDown, FaRocket, FaCheckCircle, FaBan } from "react-icons/fa";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import * as client from "./client";
 import { Quiz } from "./client";
+import "./index.css";
 
 function QuizList() {
     const { courseId } = useParams();
@@ -31,6 +32,10 @@ function QuizList() {
             console.log(err);
         }
     }
+    const dateToString = (d:Date) => {
+        const date = new Date(d);
+        return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} at ${date.getHours()}:${date.getMinutes()}`;
+    }
     return (
         <div>
             <div className="buttons">
@@ -38,11 +43,36 @@ function QuizList() {
                 <button className="btn btn-secondary"><FaEllipsisV/></button>
             </div><hr/>
             {quizzes.length == 0 && <div>Click '+ Quiz' button to create a new quiz.</div>}
-            {quizzes.map((quiz:any, index) => (
-                <li key={index}>
-                    <div>{quiz.id}</div>
-                    <div>{quiz.title}</div>
-                </li>))}
+            <ul className="list-group quizzes">
+                <li className="list-group-item">
+                &nbsp; <FaAngleDown/> Quizzes
+                    <ul className="list-group">
+                    {quizzes
+                        .filter((quiz:any) => quiz.course === courseId)
+                        .map((quiz:any, index) => (
+                            <li key={index} className="list-group-item d-flex" id="quiz-list">
+                                <div className="w-75">
+                                    {quiz.published ? <span className="text-success"><FaRocket/></span> : <FaRocket/>} &nbsp; {quiz.title}
+                                    <div className="dates">
+                                        <span>
+                                            {new Date(quiz.untilDate) < new Date() && <b>Closed</b>}
+                                            {new Date(quiz.availableDate) <= new Date() && new Date(quiz.untilDate) >= new Date() && <b>Available</b>}
+                                            {new Date(quiz.availableDate) > new Date() && `Not available until ${dateToString(quiz.availableDate)}`}
+                                        </span>
+                                        <span><b>Due</b> {dateToString(quiz.dueDate)}</span>
+                                        <span>{quiz.points} pts</span>
+                                        <span>{quiz.questions && `${quiz.questions.length()} Questions`}</span>
+                                    </div>
+                                </div>
+                                <span className="float-end">
+                                    {quiz.published ? <span className="text-success"><FaCheckCircle/></span> : <FaBan/>}
+                                    <FaEllipsisV className="ms-2" />
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
+                </li>
+            </ul>
         </div>
     )
 }
