@@ -13,7 +13,7 @@ function QuizList() {
         dueDate: new Date(), points: 0, course: "", published: false, type: "Graded Quiz",
         assignmentGroup: "Quizzes", shuffleAnswers: true, timeLimit: 20,
         multipleAttempts: false, showCorrectAnswers: "", accessCode: "",
-        oneQAtTime: true, webcam: false, lockQAfterAnswering: false
+        oneQAtTime: true, webcam: false, lockQAfterAnswering: false, questions: []
     });
     const navigate = useNavigate();
     const fetchQuizzes = async () => {

@@ -10,7 +10,7 @@ export interface Quiz {
     points: number, course: string, published: boolean, type: string,
     assignmentGroup: string, shuffleAnswers: boolean, timeLimit: number,
     multipleAttempts: boolean, showCorrectAnswers: string, accessCode: string,
-    oneQAtTime: boolean, webcam: boolean, lockQAfterAnswering: boolean
+    oneQAtTime: boolean, webcam: boolean, lockQAfterAnswering: boolean, questions: Array<any>,
 };
 // Quiz List
 export const createQuiz = async (courseId:any, quiz:any) => {

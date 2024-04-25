@@ -17,3 +17,7 @@ th {
 .form-check.d-flex {
     gap:10px;
 }
+.questions .buttons {
+    justify-content: center;
+    gap: 10px;
+}
