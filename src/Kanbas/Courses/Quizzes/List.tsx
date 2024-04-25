@@ -52,7 +52,6 @@ function QuizList() {
         quiz.published = !quiz.published;
         await client.updateQuiz(quiz);
         setQuizzes(quizzes.map((q) => q.id === quiz.id ? q = quiz : q));
-
     }
     const dateToString = (d:Date) => {
         const date = new Date(d);

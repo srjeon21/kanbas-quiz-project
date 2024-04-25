@@ -21,7 +21,6 @@ function QuizDetails() {
         try {
             const quizDetail = await client.findQuizById(qid as string);
             setQuiz(quizDetail);
-            setPublished(quiz.published);
         } catch (error: any) {
             console.log(error);
             navigate(`/Kanbas/Courses/${courseId}/Quizzes`);
@@ -34,14 +33,11 @@ function QuizDetails() {
         const date = new Date(d);
         return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} at ${date.getHours()}:${date.getMinutes()}`;
     }
-    const [published, setPublished] = useState(!quiz.published);
-    console.log(published);
-    console.log(quiz.published);
-    const handleClick = async () => {
-        quiz.published = published;
-        setPublished(!published);
+    const updateQuiz = async () => {
+        quiz.published = !quiz.published;
         await client.updateQuiz(quiz);
-      };
+        setQuiz({...quiz, published: quiz.published });
+    }
     const toEditor = () => {
         navigate(`/Kanbas/Courses/${courseId}/Quizzes/${qid}/edit`);
     }
@@ -50,7 +46,7 @@ function QuizDetails() {
             {quiz && (
             <div>
                 <div className="buttons">
-                    <button onClick={handleClick} className={!published ? "btn btn-success" : "btn btn-danger"}>{!published ? <FaCheckCircle/>: <FaBan/>}{!published ? " Published" : " Unpublished"}</button>
+                    <button onClick={updateQuiz} className={quiz.published ? "btn btn-success" : "btn btn-danger"}>{quiz.published ? <FaCheckCircle/>: <FaBan/>}{quiz.published ? " Published" : " Unpublished"}</button>
                     <button className="btn btn-secondary">Preview</button>
                     <button className="btn btn-secondary" onClick={toEditor}><FaPencilAlt/> Edit</button>
                     <button className="btn btn-secondary"><FaEllipsisV/></button>
@@ -73,7 +69,7 @@ function QuizDetails() {
                             </tr>
                             <tr>
                                 <td className="w-50">Shuffle Answers</td>
-                                <td className="w-50">{(quiz.shuffleAnswers)}</td>
+                                <td className="w-50">{quiz.shuffleAnswers ? "Yes" : "No"}</td>
                             </tr>
                             <tr>
                                 <td className="w-50">Time Limit</td>
@@ -81,11 +77,11 @@ function QuizDetails() {
                             </tr>
                             <tr>
                                 <td className="w-50">Multiple Attempts</td>
-                                <td className="w-50">{quiz.multipleAttempts.toString()}</td>
+                                <td className="w-50">{quiz.multipleAttempts ? "Yes" : "No"}</td>
                             </tr>
                             <tr>
                                 <td className="w-50">Show Correct Answers</td>
-                                <td className="w-50">{quiz.showCorrectAnswers.toString()}</td>
+                                <td className="w-50">{quiz.showCorrectAnswers ? `${quiz.showCorrectAnswers}` : ""}</td>
                             </tr>
                             <tr>
                                 <td className="w-50">Access Code</td>
@@ -93,15 +89,15 @@ function QuizDetails() {
                             </tr>
                             <tr>
                                 <td className="w-50">One Question at a Time</td>
-                                <td className="w-50">{quiz.oneQAtTime.toString()}</td>
+                                <td className="w-50">{quiz.oneQAtTime ? "Yes" : "No"}</td>
                             </tr>
                             <tr>
                                 <td className="w-50">Webcam Required</td>
-                                <td className="w-50">{quiz.webcam.toString()}</td>
+                                <td className="w-50">{quiz.webcam ? "Yes" : "No"}</td>
                             </tr>
                             <tr>
                                 <td className="w-50">Lock Questions After Answering</td>
-                                <td className="w-50">{quiz.lockQAfterAnswering.toString()}</td>
+                                <td className="w-50">{quiz.lockQAfterAnswering ? "Yes" : "No"}</td>
                             </tr>
                         </tbody>
                     </table>
