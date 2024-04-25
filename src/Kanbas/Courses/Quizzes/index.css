@@ -5,3 +5,15 @@
 th {
     border-bottom: 1pt solid grey;
 }
+.form-group {
+    padding: 10px;
+}
+.details > div {
+    padding: 0.6em;
+}
+.nav-link, .nav-link:hover {
+    color: red;
+}
+.form-check.d-flex {
+    gap:10px;
+}

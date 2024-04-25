@@ -9,7 +9,7 @@ function QuizList() {
     const { courseId } = useParams();
     const [quizzes, setQuizzes] = useState<Quiz[]>([]);
     const [quiz, setQuiz] = useState<Quiz>({
-        id: "", title: "New Quiz", availableDate: new Date(), untilDate: new Date(),
+        id: "", title: "New Quiz", description: "", availableDate: new Date(), untilDate: new Date(),
         dueDate: new Date(), points: 0, course: "", published: false, type: "Graded Quiz",
         assignmentGroup: "Quizzes", shuffleAnswers: true, timeLimit: 20,
         multipleAttempts: false, showCorrectAnswers: "", accessCode: "",

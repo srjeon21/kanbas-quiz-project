@@ -10,7 +10,7 @@ function QuizDetails() {
     const { courseId } = useParams();
     const { qid } = useParams();
     const [quiz, setQuiz] = useState<Quiz>({
-        id: "", title: "New Quiz", availableDate: new Date(), untilDate: new Date(),
+        id: "", title: "New Quiz", description: "", availableDate: new Date(), untilDate: new Date(),
         dueDate: new Date(), points: 0, course: "", published: false, type: "Graded Quiz",
         assignmentGroup: "Quizzes", shuffleAnswers: true, timeLimit: 20,
         multipleAttempts: false, showCorrectAnswers: "", accessCode: "",
@@ -34,12 +34,17 @@ function QuizDetails() {
         const date = new Date(d);
         return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} at ${date.getHours()}:${date.getMinutes()}`;
     }
-    const [published, setPublished] = useState(quiz.published);
+    const [published, setPublished] = useState(!quiz.published);
+    console.log(published);
+    console.log(quiz.published);
     const handleClick = async () => {
-        setPublished(!published);
         quiz.published = published;
+        setPublished(!published);
         await client.updateQuiz(quiz);
       };
+    const toEditor = () => {
+        navigate(`/Kanbas/Courses/${courseId}/Quizzes/${qid}/edit`);
+    }
     return (
         <div>
             {quiz && (
@@ -47,7 +52,7 @@ function QuizDetails() {
                 <div className="buttons">
                     <button onClick={handleClick} className={!published ? "btn btn-success" : "btn btn-danger"}>{!published ? <FaCheckCircle/>: <FaBan/>}{!published ? " Published" : " Unpublished"}</button>
                     <button className="btn btn-secondary">Preview</button>
-                    <button className="btn btn-secondary"><FaPencilAlt/> Edit</button>
+                    <button className="btn btn-secondary" onClick={toEditor}><FaPencilAlt/> Edit</button>
                     <button className="btn btn-secondary"><FaEllipsisV/></button>
                 </div><hr/>
                 <h2>{quiz.title}</h2>

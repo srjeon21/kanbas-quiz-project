@@ -6,7 +6,7 @@ const COURSES_API = `${API_BASE}api/courses`;
 const QUIZZES_API = `${API_BASE}api/quizzes`;
 
 export interface Quiz {
-    id: string, title: string, availableDate: Date, untilDate: Date, dueDate: Date,
+    id: string, title: string, description: string, availableDate: Date, untilDate: Date, dueDate: Date,
     points: number, course: string, published: boolean, type: string,
     assignmentGroup: string, shuffleAnswers: boolean, timeLimit: number,
     multipleAttempts: boolean, showCorrectAnswers: string, accessCode: string,
