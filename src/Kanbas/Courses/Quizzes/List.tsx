@@ -40,13 +40,19 @@ function QuizList() {
         }
     }
     const deleteQuiz = async (quiz:any) => {
-        console.log(quiz);
         try {
             await client.deleteQuiz(quiz.id);
             setQuizzes(quizzes.filter((q) => q.id !== quiz.id));
         } catch (err) {
             console.log(err);
         }
+    }
+    const updateQuiz = async (quiz:any) => {
+        setSelectedQuiz(quiz);
+        quiz.published = !quiz.published;
+        await client.updateQuiz(quiz);
+        setQuizzes(quizzes.map((q) => q.id === quiz.id ? q = quiz : q));
+
     }
     const dateToString = (d:Date) => {
         const date = new Date(d);
@@ -80,7 +86,8 @@ function QuizList() {
                             <li key={index} className="list-group-item">
                                 <div className="d-flex" id="quiz-list">
                                     <div className="w-75">
-                                        {quiz.published ? <span className="text-success"><FaRocket/></span> : <FaRocket/>} &nbsp; {quiz.title}
+                                        {quiz.published ? <span className="text-success"><FaRocket/></span> : <FaRocket/>} &nbsp;
+                                        <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz.id}`}>{quiz.title}</Link>
                                         <div className="dates">
                                             <span>
                                                 {new Date(quiz.untilDate) < new Date() && <b>Closed</b>}
@@ -93,7 +100,9 @@ function QuizList() {
                                         </div>
                                     </div>
                                     <span className="float-end">
-                                        {quiz.published ? <span className="text-success"><FaCheckCircle/></span> : <FaBan/>}
+                                        <span onClick={() => updateQuiz(quiz)}>
+                                            {quiz.published ? <span className="text-success"><FaCheckCircle/></span> : <FaBan/>}
+                                        </span>
                                         <span onClick={() => contextMenuButton(quiz)}><FaEllipsisV className="ms-2" /></span>
                                     </span>
                                 </div>
@@ -103,9 +112,7 @@ function QuizList() {
                                         <button className="btn btn-secondary">Edit</button>
                                         </Link>
                                     <button className="btn btn-danger" onClick={() => deleteQuiz(quiz)}>Delete</button>
-                                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz.id}`}>
-                                        <button className="btn btn-secondary">Edit</button>
-                                        </Link>
+                                    <button className="btn btn-warning" onClick={() => updateQuiz(quiz)}>{quiz.published ? "Unpublish" : "Publish"}</button>
                                 </div>
                                 )}
                             </li>
