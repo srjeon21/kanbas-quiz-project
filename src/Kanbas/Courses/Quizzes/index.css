@@ -45,3 +45,9 @@ th {
     justify-content: space-between;
     align-items: center;
 }
+/* Questions Editor */
+.question {
+    border: 1px solid grey;
+    padding: 10px;
+    margin: 5px;
+}
