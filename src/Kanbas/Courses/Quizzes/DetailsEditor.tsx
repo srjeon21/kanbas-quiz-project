@@ -68,10 +68,9 @@ function QuizDetailsEditor() {
                             {quiz.type === "Ungraded Survey" ? <option value="Ungraded Survey" selected>Ungraded Survey</option> : <option value="Ungraded Survey">Ungraded Survey</option>}
                         </select>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="points">Points</label>
-                        <input type="number" className="form-control w-25" value={quiz.points} min="0" max="100"
-                        onChange={(e) => setQuiz({...quiz, points: Number(e.target.value) })}/>
+                    <div className="form-group d-flex">
+                        <label htmlFor="points">Points: &nbsp; </label>
+                        {quiz.points} <p>&nbsp;(= Total points of questions in this quiz)</p>
                     </div>
                     <div className="form-group">
                         <label htmlFor="group">Assignment Group</label>

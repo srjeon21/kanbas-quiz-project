@@ -21,6 +21,8 @@ function QuizDetails() {
         try {
             const quizDetail = await client.findQuizById(qid as string);
             setQuiz(quizDetail);
+            console.log(quizDetail);
+            console.log(quiz);
         } catch (error: any) {
             console.log(error);
             navigate(`/Kanbas/Courses/${courseId}/Quizzes`);
@@ -41,13 +43,16 @@ function QuizDetails() {
     const toEditor = () => {
         navigate(`/Kanbas/Courses/${courseId}/Quizzes/${qid}/edit`);
     }
+    const toPreview = () => {
+        navigate(`/Kanbas/Courses/${courseId}/Quizzes/${qid}/preview`);
+    }
     return (
         <div>
             {quiz && (
             <div>
                 <div className="buttons">
                     <button onClick={updateQuiz} className={quiz.published ? "btn btn-success" : "btn btn-danger"}>{quiz.published ? <FaCheckCircle/>: <FaBan/>}{quiz.published ? " Published" : " Unpublished"}</button>
-                    <button className="btn btn-secondary">Preview</button>
+                    <button className="btn btn-secondary" onClick={toPreview}>Preview</button>
                     <button className="btn btn-secondary" onClick={toEditor}><FaPencilAlt/> Edit</button>
                     <button className="btn btn-secondary"><FaEllipsisV/></button>
                 </div><hr/>
