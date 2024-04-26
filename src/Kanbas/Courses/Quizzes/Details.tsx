@@ -46,6 +46,13 @@ function QuizDetails() {
     const toPreview = () => {
         navigate(`/Kanbas/Courses/${courseId}/Quizzes/${qid}/preview`);
     }
+    const sumOfPoints = () => {
+        const totalPoints = quiz.questions.reduce((acc, question) => {
+            return acc + parseInt(question.points);
+        }, 0);
+        quiz.points = totalPoints;
+        return totalPoints;
+    };
     return (
         <div>
             {quiz && (
@@ -66,7 +73,7 @@ function QuizDetails() {
                             </tr>
                             <tr>
                                 <td className="w-50">Points</td>
-                                <td className="w-50">{quiz.points}</td>
+                                <td className="w-50">{sumOfPoints()}</td>
                             </tr>
                             <tr>
                                 <td className="w-50">Assignment Group</td>

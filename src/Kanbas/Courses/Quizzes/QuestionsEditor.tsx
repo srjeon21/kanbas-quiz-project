@@ -48,15 +48,15 @@ function QuizQuestionsEditor() {
         fetchQuestions();
     }, []);
     const addQuestion = () => {
-        console.log(questions);
-        questions.push({
+        const newQ = {
             points: 0,
             type: "MCQ",
             question: "",
             options: [],
             correctAnswer: ""
-        });
-        setQuiz({...quiz, questions: questions });
+        };
+        const updatedQuestions = [...quiz.questions, newQ];
+        setQuiz({...quiz, questions: updatedQuestions });
     }
     const updateQuestion = async () => {
         if (quiz.id) {
@@ -82,12 +82,20 @@ function QuizQuestionsEditor() {
     }
     const [numOptionsMCQ, setNumOptionsMCQ] = useState(4);
     const [numOptionsBlank, setNumOptionsBlank] = useState(3);
+
+    const sumOfPoints = () => {
+        const totalPoints = quiz.questions.reduce((acc, question) => {
+            return acc + parseInt(question.points);
+        }, 0);
+        quiz.points = totalPoints;
+        return totalPoints;
+    };
     return (
         <div>
             {quiz && (
             <div>
                 <div className="buttons">
-                    <h1>Points {quiz.points} &nbsp;</h1>
+                    <h1>Points {sumOfPoints()} &nbsp;</h1>
                     <h1>&nbsp;{quiz.published ? <FaCheckCircle/> : <FaBan/>}{quiz.published ? " Published" : " Not Published"}&nbsp;</h1>
                     <button className="btn btn-secondary"><FaEllipsisV/></button>
                 </div><hr/>
@@ -136,7 +144,7 @@ function QuizQuestionsEditor() {
                                             }}></textarea>
                                             <p><b>Choices:</b></p>
                                             <label htmlFor="numOptionsMCQ">Number of answer options: </label>
-                                            <input id="numOptionsMCQ" type="number" value={numOptionsMCQ} className="form-control w-25"
+                                            <input id="numOptionsMCQ" type="number" min="2" value={numOptionsMCQ} className="form-control w-25"
                                                 onChange={(e) => setNumOptionsMCQ(parseInt(e.target.value))}
                                             />
                                             <div className="form-check">
@@ -200,13 +208,13 @@ function QuizQuestionsEditor() {
                                             }}></textarea>
                                             <p><b>Answers:</b></p>
                                             <label htmlFor="numOptionsBlank">Number of blanks: </label>
-                                            <input id="numOptionsBlank" type="number" value={numOptionsBlank} className="form-control w-25"
+                                            <input id="numOptionsBlank" type="number" min="2" value={numOptionsBlank} className="form-control w-25"
                                                 onChange={(e) => setNumOptionsBlank(parseInt(e.target.value))}
                                             />
                                             <div className="form-check">
                                             {Array.from({ length: numOptionsBlank }).map((_, optionIndex) => (
                                                 <span className="blank" key={optionIndex}>
-                                                    <label htmlFor={`option${optionIndex}`}>Blank {optionIndex + 1}: </label>
+                                                    <label htmlFor={`option${optionIndex}`}>Correct answer {optionIndex + 1}: </label>
                                                     <input
                                                         id={`option${optionIndex}`} type="text"
                                                         value={question.options ? question.options[optionIndex] : ""}

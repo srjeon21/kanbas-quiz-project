@@ -68,6 +68,13 @@ function QuizList() {
             });
         } else setSelectedQuiz(quiz);
     };
+    const sumOfPoints = (quiz:any) => {
+        const totalPoints = quiz.questions.reduce((acc:any, question:any) => {
+            return acc + parseInt(question.points);
+        }, 0);
+        quiz.points = totalPoints;
+        return totalPoints;
+    };
     return (
         <div>
             <div className="buttons">
@@ -94,7 +101,7 @@ function QuizList() {
                                                 {new Date(quiz.availableDate) > new Date() && `Not available until ${dateToString(quiz.availableDate)}`}
                                             </span>
                                             <span><b>Due</b> {dateToString(quiz.dueDate)}</span>
-                                            <span>{quiz.points} pts</span>
+                                            <span>{(sumOfPoints(quiz))} pts</span>
                                             <span>{quiz.questions && `${quiz.questions.length} Questions`}</span>
                                         </div>
                                     </div>
