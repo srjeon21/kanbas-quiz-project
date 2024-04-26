@@ -134,7 +134,7 @@ function QuizQuestionsEditor() {
                                     </div><br/>
                                     {question.type === "MCQ" && (
                                         <div id="mcq">
-                                            <p>Enter your question and multiple answers, then select the one correct answer.</p>
+                                            <p>Enter your question and multiple answers, the first one will the be correct answer.</p>
                                             <p><b>Question:</b></p>
                                             <textarea className="form-control" value={question.question} placeholder="Question"
                                             onChange={(e) => {
@@ -150,6 +150,7 @@ function QuizQuestionsEditor() {
                                             <div className="form-check">
                                             {Array.from({ length: numOptionsMCQ }).map((_, optionIndex) => (
                                                 <span className="mcq" key={optionIndex}>
+                                                    {optionIndex === 0 ? <p className="text text-success"><br/>Note: The answer in this box (Option 1) will be the correct answer.</p> : ""}
                                                     <label htmlFor={`option${optionIndex}`}>Option {optionIndex + 1}: </label>
                                                     <input
                                                         id={`option${optionIndex}`} type="text"
