@@ -34,16 +34,34 @@ function QuizDetailsEditor() {
             navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quiz.id}`);
         }
     }
+    const publishAndSave = async () => {
+        quiz.published = true;
+        await client.updateQuiz(quiz);
+        setQuiz({...quiz});
+    }
     useEffect(() => {
         fetchQuizDetails();
     }, []);
-
+    const sumOfPoints = () => {
+        console.log(typeof quiz.dueDate);
+        const totalPoints = quiz.questions.reduce((acc, question) => {
+            return acc + parseInt(question.points);
+        }, 0);
+        quiz.points = totalPoints;
+        return totalPoints;
+    };
+    const dateObjectToHtmlDateString = (d: Date) => { // from a4 lab
+        const date = new Date(d);
+        return `${date.getFullYear()}-${date.getMonth() + 1 < 10 ? 0 : ""}${
+          date.getMonth() + 1
+        }-${date.getDate() + 1 < 10 ? 0 : ""}${date.getDate() + 1}`;
+      };
     return (
         <div>
             {quiz && (
             <div>
                 <div className="buttons">
-                    <h1>Points {quiz.points} &nbsp;</h1>
+                    <h1>Points {sumOfPoints()} &nbsp;</h1>
                     <h1>&nbsp;{quiz.published ? <FaCheckCircle/> : <FaBan/>}{quiz.published ? " Published" : " Not Published"}&nbsp;</h1>
                     <button className="btn btn-secondary"><FaEllipsisV/></button>
                 </div><hr/>
@@ -142,14 +160,14 @@ function QuizDetailsEditor() {
                     </div>
                     <div className="form-group">
                         <label htmlFor="due">Due</label>
-                        <input type="date" className="form-control w-50" id="due" value={quiz.dueDate.toString().substring(0,10)}
-                        onChange={(e) => setQuiz({...quiz, dueDate: new Date(e.target.value.substring(0,10)) })}/>
+                        <input type="date" className="form-control w-50" id="due" value={dateObjectToHtmlDateString(quiz.dueDate)}
+                        onChange={(e) => setQuiz({...quiz, dueDate: new Date(e.target.value) })}/>
                         <label htmlFor="available">Available from</label>
-                        <input type="date" className="form-control w-50" id="available" value={quiz.availableDate.toString().substring(0,10)}
+                        <input type="date" className="form-control w-50" id="available" value={dateObjectToHtmlDateString(quiz.availableDate)}
                         onChange={(e) => setQuiz({...quiz, availableDate: new Date(e.target.value.substring(0,10)) })}/>
                         <label htmlFor="available">Until</label>
-                        <input type="date" className="form-control w-50" id="until" value={quiz.untilDate.toString().substring(0,10)}
-                        onChange={(e) => setQuiz({...quiz, untilDate: new Date(e.target.value.substring(0,10)) })}/>
+                        <input type="date" className="form-control w-50" id="until" value={dateObjectToHtmlDateString(quiz.untilDate)}
+                        onChange={(e) => setQuiz({...quiz, untilDate: new Date(e.target.value) })}/>
                     </div>
                     <hr/>
                     <div className="form-group save">
@@ -157,7 +175,7 @@ function QuizDetailsEditor() {
                             <button className="btn btn-secondary">Cancel</button>
                         </Link>
                         <Link to={`/Kanbas/Courses/${courseId}/Quizzes`}>
-                            <button className="btn btn-secondary">Save and Publish</button>
+                            <button className="btn btn-secondary" onClick={publishAndSave}>Save and Publish</button>
                          </Link>
                         <button className="btn btn-danger" onClick={updateQuiz}>Save</button>
                     </div>
