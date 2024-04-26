@@ -10,7 +10,6 @@ import "./index.css";
 function QuizQuestionsEditor() {
     const { courseId } = useParams();
     const { qid } = useParams();
-    //const { originalQuestions } = useState<Question[]>([]);
     const [quiz, setQuiz] = useState<Quiz>({
         id: "", title: "New Quiz", description: "", availableDate: new Date(), untilDate: new Date(),
         dueDate: new Date(), points: 0, course: "", published: false, type: "Graded Quiz",
@@ -22,7 +21,6 @@ function QuizQuestionsEditor() {
         id: "", quiz: "", title: "New Question", type: "MCQ", points: 0,
         question: "", options: [], correctAnswer: ""
     });
-   // const [ questions, setQuestions ] = useState<Question[]>([]);
     const [ questions, setQuestions ] = useState<any[]>([]);
     const navigate = useNavigate();
     const fetchQuizDetails = async () =>{
@@ -37,7 +35,6 @@ function QuizQuestionsEditor() {
     };
     const fetchQuestions = async () => {
         try {
-            //const questions = await client.findAllQuestions(qid as string);
             const questions = quiz.questions;
             setQuestions(questions);
             console.log(questions);
@@ -61,20 +58,30 @@ function QuizQuestionsEditor() {
         });
         setQuiz({...quiz, questions: questions });
     }
-    const updateType = (question:any, value:string) => {
-        setQuest({...question, type: value});
-        quiz.questions.push(quest);
-        setQuiz(quiz);
-    }/*
+    const updateQuestion = async () => {
+        if (quiz.id) {
+            await client.updateQuiz(quiz);
+            setQuiz({...quiz});
+        }
+    }
     const updateQuiz = async () => {
         if (quiz.id) {
             await client.updateQuiz(quiz);
-            setQuiz({...quiz}); // ...questions: 하고 어쩌고...
+            setQuiz({...quiz});
+            navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quiz.id}`);
         }
     }
-    const fieldChange = (question:any, e:any) => {
-        setQuest({...question, title: e.target.value });
-    }*/
+    const publishAndUpdate = async () => {
+        quiz.published = true;
+        await client.updateQuiz(quiz);
+        setQuiz({...quiz});
+        navigate(`/Kanbas/Courses/${courseId}/Quizzes`);
+    }
+    const toList = () => {
+        navigate(`/Kanbas/Courses/${courseId}/Quizzes`);
+    }
+    const [numOptionsMCQ, setNumOptionsMCQ] = useState(4);
+    const [numOptionsBlank, setNumOptionsBlank] = useState(3);
     return (
         <div>
             {quiz && (
@@ -128,36 +135,34 @@ function QuizQuestionsEditor() {
                                                     return q; }); setQuiz({ ...quiz, questions: updatedQuestions });
                                             }}></textarea>
                                             <p><b>Choices:</b></p>
+                                            <label htmlFor="numOptionsMCQ">Number of answer options: </label>
+                                            <input id="numOptionsMCQ" type="number" value={numOptionsMCQ} className="form-control w-25"
+                                                onChange={(e) => setNumOptionsMCQ(parseInt(e.target.value))}
+                                            />
                                             <div className="form-check">
-                                                <span className="mcq">
-                                                    <label htmlFor="correct">Correct Choice: </label>
-                                                    <input id="correct" type="text" value={question.correctAnswer} className="form-control w-75"
-                                                    onChange={(e) => {
-                                                        const updatedQuestions = quiz.questions.map((q, idx) => {
-                                                            if (idx === index) { return { ...q, correctAnswer: e.target.value }; }
-                                                            return q; }); setQuiz({ ...quiz, questions: updatedQuestions });
-                                                    }} />
+                                            {Array.from({ length: numOptionsMCQ }).map((_, optionIndex) => (
+                                                <span className="mcq" key={optionIndex}>
+                                                    <label htmlFor={`option${optionIndex}`}>Option {optionIndex + 1}: </label>
+                                                    <input
+                                                        id={`option${optionIndex}`} type="text"
+                                                        value={question.options ? question.options[optionIndex] : ""}
+                                                        className="form-control w-75"
+                                                        onChange={(e) => {
+                                                            const updatedQuestions = quiz.questions.map((q, idx) => {
+                                                                if (idx === index) {
+                                                                    const updatedOptions = [...q.options];
+                                                                    updatedOptions[optionIndex] = e.target.value;
+                                                                    return { ...q, options: updatedOptions };
+                                                                }
+                                                                return q;
+                                                            });
+                                                            setQuiz({ ...quiz, questions: updatedQuestions });
+                                                        }}
+                                                    />
                                                 </span>
-                                                <span className="mcq">
-                                                    <label htmlFor="incorrect1">Incorrect Choice: </label>
-                                                    <input id="incorrect1" type="text" value={question.options ? question.options[1] : ""} className="form-control w-75"
-                                                    onChange={(e) => {
-                                                        const updatedQuestions = quiz.questions.map((q, idx) => {
-                                                            if (idx === index) { return { ...q, options: e.target.value }; }
-                                                            return q; }); setQuiz({ ...quiz, questions: updatedQuestions });
-                                                    }} />
-                                                </span>
-                                                <span className="mcq">
-                                                    <label htmlFor="incorrect2">Incorrect Choice: </label>
-                                                    <input id="incorrect2" type="text" value={question.options ? question.options[2] : ""} className="form-control w-75" />
-                                                </span>
-                                                <span className="mcq">
-                                                    <label htmlFor="incorrect3">Incorrect Choice: </label>
-                                                    <input id="incorrect3" type="text" value={question.options ? question.options[3] : ""} className="form-control w-75" />
-                                                </span>
-
+                                            ))}
                                         </div>
-                                        </div>
+                                    </div>
                                     )}
                                     {question.type === "true/false" && (
                                         <div id="true/false">
@@ -194,32 +199,47 @@ function QuizQuestionsEditor() {
                                                     return q; }); setQuiz({ ...quiz, questions: updatedQuestions });
                                             }}></textarea>
                                             <p><b>Answers:</b></p>
-                                            <span className="blank">
-                                                <label htmlFor="blank1">Correct Answer: </label>
-                                                <input type="text" className="form-control w-50" value={question.options ? question.options[0] : ""} />
-                                            </span>
-                                            <span className="blank">
-                                                <label htmlFor="blank2">Correct Answer: </label>
-                                                <input type="text" className="form-control w-50" value={question.options ? question.options[1] : ""} />
-                                            </span>
-                                            <span className="blank">
-                                                <label htmlFor="blank3">Correct Answer: </label>
-                                                <input type="text" className="form-control w-50" value={question.options ? question.options[2] : ""} />
-                                            </span>
+                                            <label htmlFor="numOptionsBlank">Number of blanks: </label>
+                                            <input id="numOptionsBlank" type="number" value={numOptionsBlank} className="form-control w-25"
+                                                onChange={(e) => setNumOptionsBlank(parseInt(e.target.value))}
+                                            />
+                                            <div className="form-check">
+                                            {Array.from({ length: numOptionsBlank }).map((_, optionIndex) => (
+                                                <span className="blank" key={optionIndex}>
+                                                    <label htmlFor={`option${optionIndex}`}>Blank {optionIndex + 1}: </label>
+                                                    <input
+                                                        id={`option${optionIndex}`} type="text"
+                                                        value={question.options ? question.options[optionIndex] : ""}
+                                                        className="form-control w-75"
+                                                        onChange={(e) => {
+                                                            const updatedQuestions = quiz.questions.map((q, idx) => {
+                                                                if (idx === index) {
+                                                                    const updatedOptions = [...q.options];
+                                                                    updatedOptions[optionIndex] = e.target.value;
+                                                                    return { ...q, options: updatedOptions };
+                                                                }
+                                                                return q;
+                                                            });
+                                                            setQuiz({ ...quiz, questions: updatedQuestions });
+                                                        }}
+                                                    />
+                                                </span>
+                                            ))}
+                                        </div>
                                         </div>
                                     )}
                                     <div className="buttons">
                                         <button className="btn btn-secondary">Cancel</button>
-                                        <button className="btn btn-danger">Update Question</button>
+                                        <button className="btn btn-danger" onClick={updateQuestion}>Update Question</button>
                                     </div>
                                 </div>
                         </li>
                     ))}
                 </div>
                 <div className="buttons">
-                    <button className="btn btn-secondary">Cancel</button>
-                    <button className="btn btn-secondary">Save & Publish</button>
-                    <button className="btn btn-secondary">Save</button>
+                    <button className="btn btn-secondary" onClick={toList}>Cancel</button>
+                    <button className="btn btn-secondary" onClick={publishAndUpdate}>Save & Publish</button>
+                    <button className="btn btn-secondary" onClick={updateQuiz}>Save</button>
                 </div>
             </div>
             )}
