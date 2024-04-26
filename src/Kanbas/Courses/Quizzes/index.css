@@ -45,9 +45,24 @@ th {
     justify-content: space-between;
     align-items: center;
 }
-/* Questions Editor */
-.question {
-    border: 1px solid grey;
+/* Questions Editor, Preview */
+.question, .question-box {
+    border: 1px solid grey !important;
     padding: 10px;
-    margin: 5px;
+    margin: 15px 5px;
+}
+/* Preview */
+.question-box {
+    padding: 0px;
+}
+.qu-header {
+    justify-content: space-between;
+    background-color: lightgrey;
+    padding: 10px;
+}
+.qu-header > h1, .question-box {
+    margin: 10px;
+}
+.box-content {
+    margin: 15px 10px;
 }
